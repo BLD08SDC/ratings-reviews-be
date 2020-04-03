@@ -8,7 +8,7 @@ CREATE DATABASE ratings-reviews-be
 
 USE DATABASE ratings-reviews-be
 
-CREATE TABLE "products" (
+CREATE TABLE "product" (
   "id" SERIAL,
   "name" VARCHAR,
   "slogan" VARCHAR,
@@ -20,7 +20,7 @@ CREATE TABLE "products" (
 
 CREATE TABLE "characteristics" (
   "id" SERIAL,
-  "product_id" INTEGER NOT NULL REFERENCES "products"("id"),
+  "product_id" INTEGER NOT NULL REFERENCES "product"("id"),
   "name" VARCHAR,
   PRIMARY KEY ("id")
 );
@@ -30,7 +30,7 @@ CREATE TABLE "characteristics" (
 
 CREATE TABLE "characteristics_reviews" (
   "id" SERIAL,
-  "character_id" INTEGER NOT NULL REFERENCES "characteristics"("id"),
+  "characteristic_id" INTEGER NOT NULL REFERENCES "characteristics"("id"),
   "review_id" INTEGER NOT NULL,
   "value" VARCHAR,
   PRIMARY KEY ("id")
@@ -41,7 +41,7 @@ CREATE TABLE "characteristics_reviews" (
 
 CREATE TABLE "reviews" (
   "id" SERIAL,
-  "product_id" INTEGER NOT NULL REFERENCES "products"("id"),
+  "product_id" INTEGER NOT NULL REFERENCES "product"("id"),
   "rating" INTEGER,
   "date" DATE,
   "summary" VARCHAR,
@@ -70,12 +70,17 @@ CREATE TABLE "reviews_photos" (
 --=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=--
 --==--==-==-==-==-==-==-==-==-==-==-==--==-==-==-==-==-==-==-==-==-==-==--==-==-==-==-==-==-==-==-==-==-==--==-==-==-==-==-==-==-==-==-==--
 
-COPY "products" ("name", "slogan", "description", "category", "default_price") FROM /Users/thomas/git-hackreactor/systemDesignCapstone/ratings-reviews-be/rawDataCSV/product.csv
+COPY "products" ("id", "name", "slogan", "description", "category", "default_price") FROM /Users/thomas/git-hackreactor/systemDesignCapstone/ratings-reviews-be/rawDataCSV/product.csv
 
-COPY "characteristics" ("product_id", "name") FROM /Users/thomas/git-hackreactor/systemDesignCapstone/ratings-reviews-be/rawDataCSV/characteristics.csv
+COPY "characteristics" ("id", "product_id", "name") FROM /Users/thomas/git-hackreactor/systemDesignCapstone/ratings-reviews-be/rawDataCSV/characteristics.csv
 
-COPY "characteristics_reviews" ("character_id", "review_id", "value") FROM /Users/thomas/git-hackreactor/systemDesignCapstone/ratings-reviews-be/rawDataCSV/characteristic_reviews.csv
+COPY "characteristics_reviews" ("id", "characteristic_id", "review_id", "value") FROM /Users/thomas/git-hackreactor/systemDesignCapstone/ratings-reviews-be/rawDataCSV/characteristic_reviews.csv
 
-COPY "reviews" ("product_id", "rating", "date", "summary", "body", "recommend", "reported", "reviewer_name", "reviewer_email", "response", "helpfulness") FROM /Users/thomas/git-hackreactor/systemDesignCapstone/ratings-reviews-be/rawDataCSV/reviews.csv
+COPY "reviews" ("id", "product_id", "rating", "date", "summary", "body", "recommend", "reported", "reviewer_name", "reviewer_email", "response", "helpfulness") FROM /Users/thomas/git-hackreactor/systemDesignCapstone/ratings-reviews-be/rawDataCSV/reviews.csv
 
-COPY "reviews_photos" ("review_id", "url") FROM /Users/thomas/git-hackreactor/systemDesignCapstone/ratings-reviews-be/rawDataCSV/reviews_photos.csv
+COPY "reviews_photos" ("id", "review_id", "url") FROM /Users/thomas/git-hackreactor/systemDesignCapstone/ratings-reviews-be/rawDataCSV/reviews_photos.csv
+
+
+--  psql -U <username> -f  'filepath'
+
+--  psql -U thomas  -f  '/Users/thomas/git-hackreactor/systemDesignCapstone/ratings-reviews-be/rawDataCSV/reviews_photos.csv'
