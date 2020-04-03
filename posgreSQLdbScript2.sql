@@ -1,4 +1,5 @@
 -- \i '/Users/thomas/git-hackreactor/systemDesignCapstone/ratings-reviews-be/posgreSQLdbScript2.sql'
+\c thomas
 
 DROP DATABASE IF EXISTS ratingsreviewsbe;
 
