@@ -12,7 +12,7 @@ app.use(
 );
 
 app.get('/', (req,res) => {
-    res.json({ stuff: "stuff stuff stuff" })
+    res.send({ stuff: "stuff stuff stuff" })
 })
 
 app.listen(port, () => {
