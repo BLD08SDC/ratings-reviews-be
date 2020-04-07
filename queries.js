@@ -12,7 +12,7 @@ const pool = new Pool(config);
 const getListOfReviews = (req,res) => {
 
     pool
-      .query()
+      .query(`SELECT * FROM reviews WHERE product_id=$1 LIMIT ORDER BY id ASC`, [id, numberOfReviews, sort]) // and make it sizeable and sortable, add $2 and $3 and give them default values in case they are not supplied (default values currently coded)
       .then(res.send())
       .catch(error => console.log(error))
 
