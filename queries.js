@@ -16,7 +16,7 @@ const getListOfReviews = (req,res) => {
     const sort = req.params.sort || Date;
 
     pool
-      .query(`SELECT * FROM reviews WHERE product_id=$1 AND reported='f' ORDER BY $3 ASC LIMIT $2`, [id, numberOfReviews, sort]) // and make it sizeable and sortable, add $2 and $3 and give them default values in case they are not supplied (default values currently coded)
+      .query(`SELECT * FROM reviews WHERE product_id=$1 AND NOT reported ORDER BY $3 ASC LIMIT $2`, [id, numberOfReviews, sort]) // and make it sizeable and sortable, add $2 and $3 and give them default values in case they are not supplied (default values currently coded)
       .then(res.send())
       .catch(error => console.log(error))
 
