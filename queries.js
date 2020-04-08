@@ -49,7 +49,7 @@ const reportReview = (req, res) => {
     const id = parseInt(req.params.id);
 
     pool
-      .query(`UPDATE reviews SET reported='t' WHERE id=$1`, )
+      .query(`UPDATE reviews SET reported='t' WHERE id=$1`, [id])
       .then(res.send())
       .catch(error => console.log(error))
 }
