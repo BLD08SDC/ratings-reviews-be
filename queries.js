@@ -18,7 +18,6 @@ const getListOfReviews = (req,res) => {
       .query(`SELECT * FROM reviews WHERE product_id=$1 AND NOT reported ORDER BY $3 ASC LIMIT $2`, [id, numberOfReviews, sort]) // and make it sizeable and sortable, add $2 and $3 and give them default values in case they are not supplied (default values currently coded)
       .then(res.send())
       .catch(error => console.log(error))
-
 }
 
 const getCharacteristicsMeta = (req, res) => {
@@ -45,8 +44,10 @@ const markHelpful = (req, res) => {
 }
 
 const reportReview = (req, res) => {
+    const id = parseInt(req.params.id);
+
     pool
-      .query()
+      .query(`UPDATE reviews SET reported='t' WHERE id=$1`, )
       .then(res.send())
       .catch(error => console.log(error))
 }
