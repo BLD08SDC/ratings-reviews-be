@@ -29,9 +29,10 @@ const getCharacteristicsMeta = (req, res) => {
       .catch(error => console.log(error))
 }
 
-const addReview = (req,res) => {
+const addReview = (req, res) => {
+    const { product_id, rating, date, summary, body, recommend, reported, reviewer_name, reviewer_email, response, helpfulness } = req.body
     pool
-      .query()
+      .query(`INSERT INTO reviews (product_id, rating, date, summary, body, recommend, reported, reviewer_name, reviewer_email, response, helpfulness) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`, [product_id, rating, date, summary, body, recommend, reported, reviewer_name, reviewer_email, response, helpfulness])
       .then(res.send())
       .catch(error => console.log(error))
 }
