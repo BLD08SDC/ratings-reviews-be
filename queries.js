@@ -11,21 +11,25 @@ const pool = new Pool(config);
 
 const getListOfReviews = (req,res) => {
 
+    const id = parseInt(req.params.id)
+    const numberOfReviews = req.params.numberOfReviews || 5;
+    const sort = req.params.sort || Date;
+
     pool
-      .query(`SELECT * FROM reviews WHERE product_id=$1 LIMIT ORDER BY id ASC`, [id, numberOfReviews, sort]) // and make it sizeable and sortable, add $2 and $3 and give them default values in case they are not supplied (default values currently coded)
+      .query(`SELECT * FROM reviews WHERE product_id=$1 AND reported='f' ORDER BY $3 ASC LIMIT $2`, [id, numberOfReviews, sort]) // and make it sizeable and sortable, add $2 and $3 and give them default values in case they are not supplied (default values currently coded)
       .then(res.send())
       .catch(error => console.log(error))
 
 }
 
-const getSingleReview = (req,res) => {
+const getCharacteristicsMeta = (req, res) => {
     pool
       .query()
       .then(res.send())
-      .catch (error => console.log(error))
+      .catch(error => console.log(error))
 }
 
-const getCharacteristicsMeta = (req, res) => {
+const addReview = (req,res) => {
     pool
       .query()
       .then(res.send())
@@ -48,8 +52,8 @@ const reportReview = (req, res) => {
 
 module.exports = {
     getListOfReviews,
-    getSingleReview,
     getCharacteristicsMeta,
+    addReview,
     markHelpful,
     reportReview,
 }
