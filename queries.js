@@ -7,7 +7,7 @@ const pool = new Pool(/* config */{
 });
 
 const getListOfReviews = (req) => {
-  console.log(req)
+    // console.log(req)
     const id = parseInt(req.id) || 2;
     const page = parseInt(req.page) || 0;
     const count = parseInt(req.count) || 5;
