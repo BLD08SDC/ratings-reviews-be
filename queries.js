@@ -66,12 +66,10 @@ const markHelpful = (req, res) => {
 }
 
 const reportReview = (req, res) => {
-    const id = parseInt(req.params.id);
+    const id = parseInt(req.review_id);
 
-    pool
+    return pool
       .query(`UPDATE reviews SET reported='t' WHERE id=$1`, [id])
-      .then(res.send())
-      .catch(error => console.log(error))
 }
 
 module.exports = {
