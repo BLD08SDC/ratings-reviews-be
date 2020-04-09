@@ -45,6 +45,12 @@ app.get('reviews/:product_id/meta', (req, res) => {
         .catch(error => console.log(error))
 })
 
+app.post('/reviews/:product_id', (req, res) => {
+    queryPool.addReview(req.params)
+        .then(res.send("Thank\'s for your review!"))
+        .catch(error => console.log(error))
+})
+
 app.put('/reviews/helpful/:review_id', (req, res) => {
     queryPool.markHelpful(req.params)
         .then(res.send('Thank\'s for the feedback'))
