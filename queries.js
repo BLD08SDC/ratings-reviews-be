@@ -57,7 +57,7 @@ const addReview = (req, res) => {
 }
 
 const markHelpful = (req, res) => {
-    const id = parseInt(req.params.id);
+    const id = parseInt(req.review_id);
 
     return pool
       .query(`UPDATE reviews SET helpfulness=helpfulness+1 WHERE id=$1`, [id])
