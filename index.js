@@ -1,18 +1,40 @@
 const express = require('express');
-
+const queryPool = require('./queries');
 const app = express();
-
 const port = 3000;
 
 app.use(express.json());
 app.use(
     express.urlencoded({
-        extended: true 
+        extended: true,
     })
 );
 
-app.get('/', (req,res) => {
-    res.send({})
+app.get('/reviews/:product_id/list', (req,res) => {
+    queryPool.getListOfReviews(req.params)
+            .then(data => {
+                const results = data.rows.map(i => ({
+                    "review_id": i.id,
+                    "rating": i.rating,
+                    "summary": i.summary,
+                    "recommend": i.recommend,
+                    "response": i.response,
+                    "body": i.body,
+                    "date": i.date,
+                    "reviewer_name": i.reviewer_name,
+                    "helpfulness": i.helpfulness,
+                    "photos": [],
+                }));
+                
+                return res.send(
+                    {
+                        "product": req.params.product_id,
+                        "page": 0,
+                        "count": 5,
+                        "results": results,
+                    }
+            )})
+            .catch(error => console.log(error))
 })
 
 app.listen(port, () => {
