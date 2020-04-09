@@ -8,14 +8,14 @@ const pool = new Pool(/* config */{
 
 const getListOfReviews = (req) => {
     // console.log(req)
-    const id = parseInt(req.id) || 2;
+    const product_id = parseInt(req.product_id) || 2;
     const page = parseInt(req.page) || 0;
     const count = parseInt(req.count) || 5;
     const sort = req.sort || 'date';
     const offsetBy = page * count || 0;
 
     return pool
-      .query(`SELECT * FROM reviews WHERE product_id=$1 AND NOT reported ORDER BY $3 ASC LIMIT $2`, [id, count, sort]) 
+      .query(`SELECT * FROM reviews WHERE product_id=$1 AND NOT reported ORDER BY $3 DESC LIMIT $2`, [product_id, count, sort]) 
         // .then((data) => {
         //   const results = data.rows.map(i => ({
         //     "review_id": i.id,
@@ -48,18 +48,18 @@ const getCharacteristicsMeta = (req, res) => {
 }
 
 const addReview = (req, res) => {
-  const product_id = req.product_id;
+  const product_id = parseInt(req.product_id);
   // const { rating, date, summary, body, recommend, reported, reviewer_name, reviewer_email, response, helpfulness } = req.body;
-  const rating = req.body.rating;
-  const date = req.body.date;
-  const summary = req.body.summary;
-  const body = req.body.body;
-  const recommend = req.body.recommend;
-  const reported = req.body.reported;
-  const reviewer_name = req.body.reviewer_name;
-  const reviewer_email = req.body.reviewer_email;
-  const response = req.body.response;
-  const helpfulness = req.body.helpfulness;
+  const rating = req.rating || 5;
+  const date = req.date || "2019-10-22T00:00:00.000Z";
+  const summary = req.summary || "testing123summary";
+  const body = req.body || "testing123345654body";
+  const recommend = req.recommend || true;
+  const reported = 'f';
+  const reviewer_name = req.reviewer_name || "testName";
+  const reviewer_email = req.reviewer_email || null;
+  const response = req.response || null;
+  const helpfulness = req.helpfulness || 0;
 
     return pool
       .query(
