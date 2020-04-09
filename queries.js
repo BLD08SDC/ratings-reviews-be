@@ -1,23 +1,43 @@
-const Pool = require('pg');
-const pool = new Pool(config);
+const { Pool } = require('pg');
+const pool = new Pool(/* config */{
+  user: 'thomas',
+  host: 'localhost',
+  database: 'ratingsreviewsbe',
+  port: 5432,
+});
 
-// config is an object that look like {
-//   user: me,
-//   host: 'localhost',
-//   database: 'api',
-//   password: 'password',
-//   port: 3000,    
-// }
+const getListOfReviews = (req) => {
+  console.log(req)
+    const id = parseInt(req.id) || 2;
+    const page = parseInt(req.page) || 0;
+    const count = parseInt(req.count) || 5;
+    const sort = req.sort || 'date';
+    const offsetBy = page * count || 0;
 
-const getListOfReviews = (req,res) => {
-    const id = parseInt(req.params.id);
-    const numberOfReviews = req.params.numberOfReviews || 5;
-    const sort = req.params.sort || Date;
+    return pool
+      .query(`SELECT * FROM reviews WHERE product_id=$1 AND NOT reported ORDER BY $3 ASC LIMIT $2`, [id, count, sort]) 
+        // .then((data) => {
+        //   const results = data.rows.map(i => ({
+        //     "review_id": i.id,
+        //     "rating": i.rating,
+        //     "summary": i.summary,
+        //     "recommend": i.recommend,
+        //     "response": i.response,
+        //     "body": i.body,
+        //     "date": i.date,
+        //     "reviewer_name": i.reviewer_name,
+        //     "helpfulness": i.helpfulness,
+        //     "photos": [],
+        //   }));
 
-    pool
-      .query(`SELECT * FROM reviews WHERE product_id=$1 AND NOT reported ORDER BY $3 ASC LIMIT $2`, [id, numberOfReviews, sort]) // and make it sizeable and sortable, add $2 and $3 and give them default values in case they are not supplied (default values currently coded)
-      .then(res.send())
-      .catch(error => console.log(error))
+        //   return ({
+        //     "product": `${id}`,
+        //     "page": page,
+        //     "count": count,
+        //     "results": results,
+        //   })
+        // })
+        // .catch(error => console.log(error))
 }
 
 const getCharacteristicsMeta = (req, res) => {
