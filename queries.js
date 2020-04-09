@@ -49,7 +49,6 @@ const getCharacteristicsMeta = (req, res) => {
 
 const addReview = (req, res) => {
   const product_id = parseInt(req.product_id);
-  // const { rating, date, summary, body, recommend, reported, reviewer_name, reviewer_email, response, helpfulness } = req.body;
   const rating = req.rating || 5;
   const date = req.date || "2019-10-22T00:00:00.000Z";
   const summary = req.summary || "testing123summary";
@@ -60,37 +59,37 @@ const addReview = (req, res) => {
   const reviewer_email = req.reviewer_email || null;
   const response = req.response || null;
   const helpfulness = req.helpfulness || 0;
-
-    return pool
-      .query(
-        `INSERT INTO 
-          reviews (
-            product_id, 
-            rating, 
-            date, 
-            summary, 
-            body, 
-            recommend, 
-            reported, 
-            reviewer_name, 
-            reviewer_email, 
-            response, 
-            helpfulness)
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`, 
-        [
-          product_id,
-          rating,
-          date,
-          summary,
-          body,
-          recommend,
-          reported,
-          reviewer_name,
-          reviewer_email,
-          response,
-          helpfulness
-        ]
-      )
+  
+  return pool
+    .query(
+      `INSERT INTO 
+        reviews (
+          product_id, 
+          rating, 
+          date, 
+          summary, 
+          body, 
+          recommend, 
+          reported, 
+          reviewer_name, 
+          reviewer_email, 
+          response, 
+          helpfulness)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`, 
+      [
+        product_id,
+        rating,
+        date,
+        summary,
+        body,
+        recommend,
+        reported,
+        reviewer_name,
+        reviewer_email,
+        response,
+        helpfulness,
+      ]
+    )
 }
 
 const markHelpful = (req, res) => {
