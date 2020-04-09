@@ -39,9 +39,11 @@ app.get('/reviews/:product_id/list', (req, res) => {
 
 app.get('reviews/:product_id/meta', (req, res) => {
     queryPool.getCharacteristicsMeta(req.params)
-        .then(res.send(data => {
+        .then(res.send(
+            {
 
-        }))
+            }
+        ))
         .catch(error => console.log(error))
 })
 
