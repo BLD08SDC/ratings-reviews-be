@@ -48,8 +48,18 @@ const getCharacteristicsMeta = (req, res) => {
 }
 
 const addReview = (req, res) => {
-  const product_id = req.product_id;  
-  const { rating, date, summary, body, recommend, reported, reviewer_name, reviewer_email, response, helpfulness } = req.body;
+  const product_id = req.product_id;
+  // const { rating, date, summary, body, recommend, reported, reviewer_name, reviewer_email, response, helpfulness } = req.body;
+  const rating = req.body.rating;
+  const date = req.body.date;
+  const summary = req.body.summary;
+  const body = req.body.body;
+  const recommend = req.body.recommend;
+  const reported = req.body.reported;
+  const reviewer_name = req.body.reviewer_name;
+  const reviewer_email = req.body.reviewer_email;
+  const response = req.body.response;
+  const helpfulness = req.body.helpfulness;
 
     return pool
       .query(
