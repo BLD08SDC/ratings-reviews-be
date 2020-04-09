@@ -10,7 +10,7 @@ app.use(
     })
 );
 
-app.get('/reviews/:product_id/list', (req,res) => {
+app.get('/reviews/:product_id/list', (req, res) => {
     queryPool.getListOfReviews(req.params)
             .then(data => {
                 const results = data.rows.map(i => ({
@@ -35,6 +35,12 @@ app.get('/reviews/:product_id/list', (req,res) => {
                     }
             )})
             .catch(error => console.log(error))
+})
+
+app.put('/reviews/report/:review_id', (req, res) => {
+    queryPool.reportReview(req.params)
+        .then(res.send('Review Reported'))
+        .catch(error => console.log(error))
 })
 
 app.listen(port, () => {
