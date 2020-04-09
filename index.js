@@ -37,8 +37,8 @@ app.get('/reviews/:product_id/list', (req, res) => {
             .catch(error => console.log(error))
 })
 
-app/put('/reviews/helpful/:review_id', (req, res) => {
-    queryPool.markHelpful()
+app.put('/reviews/helpful/:review_id', (req, res) => {
+    queryPool.markHelpful(req.params)
         .then(res.send('Thank\'s for the feedback'))
         .catch(error => console.log(error))
 })
