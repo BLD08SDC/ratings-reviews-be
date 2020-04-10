@@ -23,7 +23,7 @@ app.get('/reviews/:product_id/list', (req, res) => {
                     "date": i.date,
                     "reviewer_name": i.reviewer_name,
                     "helpfulness": i.helpfulness,
-                    "photos": [],
+                    "photos": [i.url],
                 }));
                 
                 return res.send(
