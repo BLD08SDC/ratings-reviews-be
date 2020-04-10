@@ -8,12 +8,12 @@ const pool = new Pool(/* config */{
 
 const getListOfReviews = (req) => {
     // console.log(req)
-    const product_id = parseInt(req.product_id) || 2;
+    const product_id = parseInt(req.product_id);
     const page = parseInt(req.page) || 0;
     const count = parseInt(req.count) || 5;
     const sort = req.sort || 'date';
-    const offsetBy = page * count || 0;
-
+    // const offsetBy = page * count || 0;
+    // SELECT * FROM reviews JOIN reviews_photos ON reviews.id = reviews_photos.review_id WHERE reviews.product_id=$1 AND NOT reviews.reported ORDER BY $3 DESC LIMIT $2
     return pool
       .query(`SELECT * FROM reviews WHERE product_id=$1 AND NOT reported ORDER BY $3 DESC LIMIT $2`, [product_id, count, sort]) 
         // .then((data) => {
@@ -47,49 +47,59 @@ const getCharacteristicsMeta = (req, res) => {
       .catch(error => console.log(error))
 }
 
-const addReview = (req, res) => {
+const addReview = (req) => {
   const product_id = parseInt(req.product_id);
-  const rating = req.rating || 5;
+  const rating = req.rating || 3;
   const date = req.date || "2019-10-22T00:00:00.000Z";
   const summary = req.summary || "testing123summary";
   const body = req.body || "testing123345654body";
   const recommend = req.recommend || true;
-  const reported = 'f';
+  const reported = false;
   const reviewer_name = req.reviewer_name || "testName";
   const reviewer_email = req.reviewer_email || null;
   const response = req.response || null;
   const helpfulness = req.helpfulness || 0;
+  const id = 1;
   
+  // const id = pool.query(`SELECT currval(pg_get_serial_sequence('reviews','id')`).then(error=> console.log(error))
+
   return pool
-    .query(
-      `INSERT INTO 
-        reviews (
-          product_id, 
-          rating, 
-          date, 
-          summary, 
-          body, 
-          recommend, 
-          reported, 
-          reviewer_name, 
-          reviewer_email, 
-          response, 
-          helpfulness)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`, 
-      [
-        product_id,
-        rating,
-        date,
-        summary,
-        body,
-        recommend,
-        reported,
-        reviewer_name,
-        reviewer_email,
-        response,
-        helpfulness,
-      ]
-    )
+    // .query(`SELECT currval(pg_get_serial_sequence('reviews','id')`)
+    // .query(`SELECT currval(pg_get_serial_sequence(reviews,id)`)
+      // .then((data) => {
+      //   console.log(data);
+      //   id = data + 1;
+      // })
+        .query(
+          `SELECT currval(pg_get_serial_sequence(reviews,id)
+          INSERT INTO 
+            reviews (
+              product_id, 
+              rating, 
+              date, 
+              summary, 
+              body, 
+              recommend, 
+              reported, 
+              reviewer_name, 
+              reviewer_email, 
+              response, 
+              helpfulness)
+          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`, 
+          [
+            product_id,
+            rating,
+            date,
+            summary,
+            body,
+            recommend,
+            reported,
+            reviewer_name,
+            reviewer_email,
+            response,
+            helpfulness,
+          ]
+        )
 }
 
 const markHelpful = (req, res) => {
