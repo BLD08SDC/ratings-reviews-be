@@ -66,5 +66,5 @@ app.put('/reviews/report/:review_id', (req, res) => {
 })
 
 app.listen(port, () => {
-    console.log(`the server is running on port ${3000}`)
+    console.log(`the server is running on port ${port}`)
 });
