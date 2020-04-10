@@ -47,13 +47,6 @@ const getCharacteristicsMeta = (req, res) => {
       .catch(error => console.log(error))
 }
 
-const getReviewsCurrIndex = (req, res) => {
-  return pool
-    // Original // SELECT nextval(pg_get_serial_sequence('reviews','id'))
-    // New Attempt // SELECT nextval(names_id_seq)
-    .query(`SELECT nextval(pg_get_serial_sequence('reviews','id'))`)
-}
-
 const addReview = (req) => {
   const product_id = parseInt(req.product_id);
   const rating = req.rating || 3;
@@ -66,18 +59,20 @@ const addReview = (req) => {
   const reviewer_email = req.reviewer_email || null;
   const response = req.response || null;
   const helpfulness = req.helpfulness || 0;
-  let id = 1;
+  let id = null;
   
   // const id = pool.query(`SELECT currval(pg_get_serial_sequence('reviews','id')`).then(error=> console.log(error))
 
   return pool
-    .query(`SELECT nextval(pg_get_serial_sequence('reviews','id'))`)
+  // OLD // SELECT nextval(pg_get_serial_sequence('reviews','id'))
+  // NEW // SELECT nextval('reviews_id_seq')
+  // 3rd // SELECT MAX(id) FROM reviews
+    .query(`SELECT MAX(id) FROM reviews`)
       .then((data) => {
-        // console.log(data);
-        id = data.rows[0].nextval;
-      })
-      .then(() => (
-        pool.query(
+        // console.log(data.rows[0].max + 1);
+        // id = `${data.rows[0].max + 1}`;
+        id = data.rows[0].max + 1;
+        return pool.query(
           `INSERT INTO
             reviews (
               id,
@@ -108,7 +103,7 @@ const addReview = (req) => {
             helpfulness,
           ]
         )
-      ))
+      })
 }
 
 const markHelpful = (req, res) => {
@@ -128,7 +123,6 @@ const reportReview = (req, res) => {
 module.exports = {
     getListOfReviews,
     getCharacteristicsMeta,
-    getReviewsCurrIndex,
     addReview,
     markHelpful,
     reportReview,
