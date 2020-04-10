@@ -4,6 +4,8 @@
   "description": "E-commerce Retail Portal: Tiger-Eye, Back-End, Services, Ratings &amp; Reviews Module",
   "main": "index.js",
   "scripts": {
+    "start": "node./app.js",
+    "dev": "nodemon ./app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
