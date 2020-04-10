@@ -21,6 +21,7 @@
   "homepage": "https://github.com/BLD08SDC/ratings-reviews-be#readme",
   "dependencies": {
     "express": "^4.17.1",
+    "newrelic": "^6.5.0",
     "pg": "^8.0.0"
   }
 }
