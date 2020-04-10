@@ -15,7 +15,7 @@ const getListOfReviews = (req) => {
     // const offsetBy = page * count || 0;
     // SELECT * FROM reviews JOIN reviews_photos ON reviews.id = reviews_photos.review_id WHERE reviews.product_id=$1 AND NOT reviews.reported ORDER BY $3 DESC LIMIT $2
     return pool
-      .query(`SELECT * FROM reviews WHERE product_id=$1 AND NOT reported ORDER BY $3 DESC LIMIT $2`, [product_id, count, sort]) 
+      .query(`SELECT * FROM reviews FULL JOIN reviews_photos ON reviews.id = reviews_photos.review_id WHERE reviews.product_id=$1 AND NOT reviews.reported ORDER BY $3 DESC LIMIT $2`, [product_id, count, sort]) 
         // .then((data) => {
         //   const results = data.rows.map(i => ({
         //     "review_id": i.id,
@@ -47,6 +47,13 @@ const getCharacteristicsMeta = (req, res) => {
       .catch(error => console.log(error))
 }
 
+const getReviewsCurrIndex = (req, res) => {
+  return pool
+    // Original // SELECT nextval(pg_get_serial_sequence('reviews','id'))
+    // New Attempt // SELECT nextval(names_id_seq)
+    .query(`SELECT nextval(pg_get_serial_sequence('reviews','id'))`)
+}
+
 const addReview = (req) => {
   const product_id = parseInt(req.product_id);
   const rating = req.rating || 3;
@@ -59,21 +66,21 @@ const addReview = (req) => {
   const reviewer_email = req.reviewer_email || null;
   const response = req.response || null;
   const helpfulness = req.helpfulness || 0;
-  const id = 1;
+  let id = 1;
   
   // const id = pool.query(`SELECT currval(pg_get_serial_sequence('reviews','id')`).then(error=> console.log(error))
 
   return pool
-    // .query(`SELECT currval(pg_get_serial_sequence('reviews','id')`)
-    // .query(`SELECT currval(pg_get_serial_sequence(reviews,id)`)
-      // .then((data) => {
-      //   console.log(data);
-      //   id = data + 1;
-      // })
-        .query(
-          `SELECT currval(pg_get_serial_sequence(reviews,id)
-          INSERT INTO 
+    .query(`SELECT nextval(pg_get_serial_sequence('reviews','id'))`)
+      .then((data) => {
+        // console.log(data);
+        id = data.rows[0].nextval;
+      })
+      .then(() => (
+        pool.query(
+          `INSERT INTO
             reviews (
+              id,
               product_id, 
               rating, 
               date, 
@@ -87,6 +94,7 @@ const addReview = (req) => {
               helpfulness)
           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`, 
           [
+            id,
             product_id,
             rating,
             date,
@@ -100,6 +108,7 @@ const addReview = (req) => {
             helpfulness,
           ]
         )
+      ))
 }
 
 const markHelpful = (req, res) => {
@@ -119,6 +128,7 @@ const reportReview = (req, res) => {
 module.exports = {
     getListOfReviews,
     getCharacteristicsMeta,
+    getReviewsCurrIndex,
     addReview,
     markHelpful,
     reportReview,
