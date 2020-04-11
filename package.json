@@ -1,0 +1,26 @@
+{
+  "name": "ratings-reviews-be",
+  "version": "1.0.0",
+  "description": "E-commerce Retail Portal: Tiger-Eye, Back-End, Services, Ratings &amp; Reviews Module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node./app.js",
+    "dev": "nodemon ./app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BLD08SDC/ratings-reviews-be.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BLD08SDC/ratings-reviews-be/issues"
+  },
+  "homepage": "https://github.com/BLD08SDC/ratings-reviews-be#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "pg": "^8.0.0"
+  }
+}
