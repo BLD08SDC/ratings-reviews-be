@@ -1,3 +1,7 @@
+require('dotenv').config()
+
+const relicLoicense = process.env.RELICLOICENSE
+
 'use strict'
 /**
  * New Relic agent configuration.
@@ -9,11 +13,11 @@ exports.config = {
   /**
    * Array of application names.
    */
-  app_name: ['My Application'],
+  app_name: ['Ratings & Reviews Back-end'],
   /**
    * Your New Relic license key.
    */
-  license_key: 'license key here',
+  license_key: relicLoicense,
   logging: {
     /**
      * Level at which to log. 'trace' is most useful to New Relic when diagnosing
