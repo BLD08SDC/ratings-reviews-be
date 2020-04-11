@@ -1,3 +1,6 @@
+require('newrelic'); 
+require('dotenv').config();
+
 // import Express
 const express = require('express');
 
@@ -5,7 +8,8 @@ const express = require('express');
 const queryPool = require('./queries');
 
 const app = express();
-const port = 3000;
+
+const port = process.env.PORT;
 
 // These app.use statements tell Express which middleware 'layers' to apply
 app.use(express.json());
